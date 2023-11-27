@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 
+#include "ble_keyboard.h"
+
+
 int main(void){
     stdio_init_all();
 
-    while(true){
-        printf("Hello, world!!\n");
-        sleep_ms(1000);
-    }
+    ble_keyboard_start();
 }
