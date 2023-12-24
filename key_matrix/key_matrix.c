@@ -10,8 +10,12 @@
 const int output_pins[4] = {2, 3, 4, 5};
 const int input_pins[5] = {28, 27, 21, 20, 19};
 
-void init_key_matrix(){
+static const int *global_keymap = NULL;
+
+void init_key_matrix(const int *keymap){
     int i;
+
+    global_keymap = keymap;
 
     for (i=0; i<4; i++){
         gpio_init(output_pins[i]);
@@ -25,14 +29,17 @@ void init_key_matrix(){
     }
 }
 
-void scan_key_matrix() {
+void scan_key_matrix(int *modifier, int *keycodes) {
     int i, j;
+    int pressed_keys_index = 0;
+
     for (i = 0; i < 4; i++) {
         gpio_put(output_pins[i], true);
         sleep_ms(1);
         for (j = 0; j < 5; j++) {
             if (gpio_get(input_pins[j])) {
-                printf("Pressed: %d, %d\n", i, j);
+                if (pressed_keys_index>5) continue;
+                keycodes[pressed_keys_index++] = global_keymap[j*4+i];
             }
         }
         gpio_put(output_pins[i], false);
