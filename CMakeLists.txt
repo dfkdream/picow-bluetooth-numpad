@@ -4,6 +4,8 @@ set(PICO_BOARD pico_w)
 
 set(USE_BLE 1)
 
+set(PICO_FLASH_ASSUME_COREX_SAFE 1)
+
 include(lib/pico-sdk/pico_sdk_init.cmake)
 
 project(picow-bluetooth-numpad)
@@ -20,7 +22,9 @@ target_link_libraries(picow-bluetooth-numpad
         pico_btstack_ble
         pico_btstack_cyw43
         pico_btstack_classic
-        pico_cyw43_arch_none)
+        pico_cyw43_arch_none
+        pico_multicore
+        )
 
 target_include_directories(picow-bluetooth-numpad PRIVATE ${CMAKE_CURRENT_LIST_DIR}/keyboard)
 pico_btstack_make_gatt_header(picow-bluetooth-numpad PRIVATE ${CMAKE_CURRENT_LIST_DIR}/keyboard/picow-bluetooth-numpad.gatt)
