@@ -2,7 +2,7 @@
 // Created by dfkdream on 23. 11. 27.
 //
 
-#include "ble_keyboard.h"
+#include "keyboard.h"
 #include <inttypes.h>
 
 #include "picow-bluetooth-numpad.h"
@@ -169,7 +169,7 @@ static void packet_handler (uint8_t packet_type, uint16_t channel, uint8_t *pack
 }
 
 
-void ble_keyboard_start(){
+void keyboard_start(){
     cyw43_arch_init();
 
     l2cap_init();

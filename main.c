@@ -3,8 +3,7 @@
 #include "pico/multicore.h"
 #include "pico/flash.h"
 
-#include "bluetooth_classic_keyboard.h"
-//#include "ble_keyboard.h"
+#include "keyboard.h"
 
 #include "scancodes.h"
 
@@ -29,6 +28,5 @@ int main(void){
 
     multicore_launch_core1(core1_main);
 
-    bluetooth_classic_keyboard_start();
-    //ble_keyboard_start();
+    keyboard_start();
 }

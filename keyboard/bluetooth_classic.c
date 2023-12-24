@@ -2,7 +2,7 @@
 // Created by dfkdream on 23. 11. 27.
 //
 
-#include "bluetooth_classic_keyboard.h"
+#include "keyboard.h"
 #include <inttypes.h>
 
 #include "btstack.h"
@@ -157,7 +157,7 @@ static void packet_handler(uint8_t packet_type, uint16_t channel, uint8_t * pack
     }
 }
 
-void bluetooth_classic_keyboard_start(){
+void keyboard_start(){
     cyw43_arch_init();
 
     // allow to get found by inquiry
