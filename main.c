@@ -3,8 +3,9 @@
 #include "pico/multicore.h"
 #include "pico/flash.h"
 
-#include "keyboard.h"
+#include "key_matrix.h"
 
+#include "keyboard.h"
 #include "scancodes.h"
 
 void core1_main(void){
@@ -14,6 +15,7 @@ void core1_main(void){
     }
 
     while(1){
+        scan_key_matrix();
         int keycodes[6] = {KEY_KP_1, };
         send_keys(0, keycodes);
         sleep_ms(1);
@@ -25,6 +27,8 @@ void core1_main(void){
 
 int main(void){
     stdio_init_all();
+
+    init_key_matrix();
 
     multicore_launch_core1(core1_main);
 

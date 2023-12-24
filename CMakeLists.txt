@@ -15,6 +15,7 @@ pico_sdk_init()
 if (USE_BLE)
     add_executable(picow-bluetooth-numpad
             main.c
+            key_matrix/key_matrix.c
             keyboard/ble.c
             )
 
@@ -30,6 +31,7 @@ if (USE_BLE)
 else()
     add_executable(picow-bluetooth-numpad
             main.c
+            key_matrix/key_matrix.c
             keyboard/bluetooth_classic.c
             )
 
@@ -44,6 +46,7 @@ endif()
 
 
 target_include_directories(picow-bluetooth-numpad PRIVATE ${CMAKE_CURRENT_LIST_DIR}/keyboard)
+target_include_directories(picow-bluetooth-numpad PRIVATE ${CMAKE_CURRENT_LIST_DIR}/key_matrix)
 
 pico_enable_stdio_usb(picow-bluetooth-numpad 1)
 pico_enable_stdio_uart(picow-bluetooth-numpad 0)
