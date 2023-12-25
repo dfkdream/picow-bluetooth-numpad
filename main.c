@@ -7,8 +7,6 @@
 #include "keyboard.h"
 #include "scancodes.h"
 
-#define INPUT_DELAY 5
-
 const int keymap[] = {
         KEY_NUM_LOCK, KEY_KP_SLASH, KEY_KP_ASTERISK, KEY_KP_MINUS,
         KEY_KP_7,     KEY_KP_8,     KEY_KP_9,        KEY_NULL,
@@ -43,7 +41,6 @@ int main(void){
         if (is_keycodes_changed(keycodes_prev, keycodes)){
             send_keys(modifier, keycodes);
             memcpy(keycodes_prev, keycodes, sizeof(keycodes_prev));
-            sleep_ms(INPUT_DELAY);
         }
     }
 }
