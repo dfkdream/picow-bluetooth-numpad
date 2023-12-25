@@ -9,8 +9,6 @@
 #include "keyboard.h"
 #include "scancodes.h"
 
-#define ARRAY_SIZE(arr) (sizeof(arr)/sizeof((arr)[0]))
-
 const int keymap[] = {
         KEY_NUM_LOCK, KEY_KP_SLASH, KEY_KP_ASTERISK, KEY_KP_MINUS,
         KEY_KP_7,     KEY_KP_8,     KEY_KP_9,        KEY_NULL,
@@ -41,9 +39,10 @@ void core1_main(void){
         int keycodes[6] = {0, };
         int modifier = 0;
         scan_key_matrix(&modifier, keycodes);
-        if (is_keycodes_changed(keycodes_prev, keycodes))
+        if (is_keycodes_changed(keycodes_prev, keycodes)){
             send_keys(modifier, keycodes);
-        memcpy(keycodes_prev, keycodes, sizeof(int)*6);
+            memcpy(keycodes_prev, keycodes, sizeof(keycodes_prev));
+        }
     }
 }
 
