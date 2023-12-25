@@ -217,6 +217,4 @@ void keyboard_start(){
 
     // turn on!
     hci_power_control(HCI_POWER_ON);
-
-    btstack_run_loop_execute();
 }

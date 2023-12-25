@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include <string.h>
 #include "pico/stdlib.h"
-#include "pico/multicore.h"
-#include "pico/flash.h"
 
 #include "key_matrix.h"
 
 #include "keyboard.h"
 #include "scancodes.h"
+
+#define INPUT_DELAY 5
 
 const int keymap[] = {
         KEY_NUM_LOCK, KEY_KP_SLASH, KEY_KP_ASTERISK, KEY_KP_MINUS,
@@ -27,11 +27,12 @@ bool is_keycodes_changed(const int* prev, const int* curr){
     return false;
 }
 
-void core1_main(void){
-    if (!flash_safe_execute_core_init()){
-        printf("flash_safe_execute_core_init failed");
-        return;
-    }
+int main(void){
+    stdio_init_all();
+
+    init_key_matrix(keymap, output_pins, ARRAY_SIZE(output_pins), input_pins, ARRAY_SIZE(input_pins));
+
+    keyboard_start();
 
     int keycodes_prev[6] = {0, };
 
@@ -42,16 +43,7 @@ void core1_main(void){
         if (is_keycodes_changed(keycodes_prev, keycodes)){
             send_keys(modifier, keycodes);
             memcpy(keycodes_prev, keycodes, sizeof(keycodes_prev));
+            sleep_ms(INPUT_DELAY);
         }
     }
-}
-
-int main(void){
-    stdio_init_all();
-
-    init_key_matrix(keymap, output_pins, ARRAY_SIZE(output_pins), input_pins, ARRAY_SIZE(input_pins));
-
-    multicore_launch_core1(core1_main);
-
-    keyboard_start();
 }

@@ -98,7 +98,7 @@ void send_keys(int modifier, const int *keycodes){
 
     uint8_t report[] = {0xa1, REPORT_ID, modifier, 0,
                         keycodes[0], keycodes[1], keycodes[2], keycodes[3], keycodes[4], keycodes[5]};
-    hid_device_send_control_message(hid_cid, &report[0], sizeof(report));
+    hid_device_send_interrupt_message(hid_cid, &report[0], sizeof(report));
 }
 
 static void packet_handler(uint8_t packet_type, uint16_t channel, uint8_t * packet, uint16_t packet_size){
@@ -221,6 +221,4 @@ void keyboard_start(){
 
     // turn on!
     hci_power_control(HCI_POWER_ON);
-
-    btstack_run_loop_execute();
 }

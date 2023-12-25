@@ -24,7 +24,6 @@ if (USE_BLE)
             pico_btstack_ble
             pico_btstack_cyw43
             pico_cyw43_arch_none
-            pico_multicore
             )
 
     pico_btstack_make_gatt_header(picow-bluetooth-numpad PRIVATE ${CMAKE_CURRENT_LIST_DIR}/keyboard/picow-bluetooth-numpad.gatt)
@@ -40,7 +39,6 @@ else()
             pico_btstack_cyw43
             pico_btstack_classic
             pico_cyw43_arch_none
-            pico_multicore
             )
 endif()
 
