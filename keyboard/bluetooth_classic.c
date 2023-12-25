@@ -90,9 +90,59 @@ static enum {
     APP_CONNECTED
 } app_state = APP_BOOTING;
 
+static void drop_link_key_except(const bd_addr_t addr){
+    link_key_t link_key;
+    link_key_type_t type;
+    bd_addr_t target_addr;
+    btstack_link_key_iterator_t it;
+
+    int ok = gap_link_key_iterator_init(&it);
+    if (!ok) {
+        printf("Link key iterator not implemented\n");
+        return;
+
+    }
+
+    while(gap_link_key_iterator_get_next(&it, target_addr, link_key, &type)){
+        if (bd_addr_cmp(addr, target_addr)){
+            gap_drop_link_key_for_bd_addr(target_addr);
+            printf("Dropped link key %s\n", bd_addr_to_str(target_addr));
+        }
+    }
+
+    gap_link_key_iterator_done(&it);
+}
+
+static bool get_first_link_key_addr(bd_addr_t addr){
+    link_key_t link_key;
+    link_key_type_t type;
+    btstack_link_key_iterator_t it;
+
+    int ok = gap_link_key_iterator_init(&it);
+    if (!ok) {
+        printf("Link key iterator not implemented\n");
+        return false;
+    }
+
+    if (gap_link_key_iterator_get_next(&it, addr, link_key, &type))
+        printf("First link key: %s - type %u\n", bd_addr_to_str(addr), (int) type);
+    else{
+        printf("Link key unavailable\n");
+        return false;
+    }
+
+    gap_link_key_iterator_done(&it);
+
+    return true;
+}
+
 void send_keys(int modifier, const int *keycodes){
-    if (app_state!=APP_CONNECTED){
-        printf("HID Not connected\n");
+    if (app_state==APP_NOT_CONNECTED){
+        bd_addr_t addr;
+        get_first_link_key_addr(addr);
+        printf("HID Not connected. connecting to %s...\n", bd_addr_to_str(addr));
+        hid_device_connect(addr, &hid_cid);
+        app_state = APP_CONNECTING;
         return;
     }
 
@@ -133,7 +183,12 @@ static void packet_handler(uint8_t packet_type, uint16_t channel, uint8_t * pack
                             app_state = APP_CONNECTED;
                             hid_cid = hid_subevent_connection_opened_get_hid_cid(packet);
 
-                            printf("HID Connected\n");
+                            bd_addr_t addr;
+                            hid_subevent_connection_opened_get_bd_addr(packet, addr);
+
+                            printf("HID Connected to %s\n", bd_addr_to_str(addr));
+
+                            drop_link_key_except(addr);
 
                             break;
                         case HID_SUBEVENT_CONNECTION_CLOSED:
