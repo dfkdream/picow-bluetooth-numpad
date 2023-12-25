@@ -4,8 +4,6 @@ set(PICO_BOARD pico_w)
 
 set(USE_BLE false)
 
-set(PICO_FLASH_ASSUME_COREX_SAFE 1)
-
 include(lib/pico-sdk/pico_sdk_init.cmake)
 
 project(picow-bluetooth-numpad)
