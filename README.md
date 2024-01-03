@@ -1,8 +1,9 @@
-![picow-bluetooth-numpad logo](https://github.com/dfkdream/picow-bluetooth-numpad/blob/e531696fb88a60e6b5b35936c6d37e39d83e5a2e/assets/logo-wordmark.png)
-Firmware for Pico W Bluetooth Numpad
+<img src="https://github.com/dfkdream/picow-bluetooth-numpad/blob/e531696fb88a60e6b5b35936c6d37e39d83e5a2e/assets/logo-wordmark.png" alt="picow-bluetooth-numpad logo" width="500px" />
+
+picow-bluetooth-numpad is a Bluetooth numpad firmware for Raspberry Pi Pico W.
 
 # Features
-* Open source hardware(3D model files available on Printables)
+* Open source hardware (3D model files available on Printables)
 * Customizable keymap
 * Supports both GAP and GATT profile for enhanced compatibility
 
